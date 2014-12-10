@@ -21,5 +21,5 @@ ipdb_creator
 3. python fully_update_cn.py生成相应的文件.会在终端输出相应的ip和网段
 4. pytho fully_update.py 生成相应的文件.
 
-最新delegated文件地址：ftp.apnic.net/stats/
+最新delegated文件地址：http://ftp.apnic.net/stats/ <br/>
 国家码地址：http://zh.wikipedia.org/wiki/%E5%9C%8B%E5%AE%B6%E4%BB%A3%E7%A2%BC
