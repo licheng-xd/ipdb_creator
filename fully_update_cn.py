@@ -103,7 +103,7 @@ def scan_cn_ip():
                                 jsonData = None
                                 while jsonData == None:
                                     try:
-                                        jsonData = query_ip(ip, base_taobao_url)
+                                        jsonData = query_ip(ip)
                                     except Exception, e:
                                         #print e
                                         logger.error(e)
@@ -111,7 +111,7 @@ def scan_cn_ip():
                                 flag = True
                                 data_key = ["country", "province", "city", "isp"]
                                 for ip in [startip,endip]:
-                                    njsonData = query_ip(ip,base_taobao_url)
+                                    njsonData = query_ip(ip)
                                     if any([njsonData.get(key,"") != jsonData.get(key,"") for key in data_key]):
                                         flag = False
                                         break
@@ -128,7 +128,7 @@ def scan_cn_ip():
                                         network, prefixlen = str(sub).split("/")
                                         ip = generate_random_ip(network, int(prefixlen))
                                         rtree.addPrefix(network, int(prefixlen))
-                                        jsonData = query_ip(ip, base_taobao_url)
+                                        jsonData = query_ip(ip)
                                         data_key = ["country", "province", "city", "isp"]
                                         node  = rtree.rnode
                                         for key in data_key:
@@ -136,7 +136,7 @@ def scan_cn_ip():
                                         node.data["ip"] = ip
                             else:
                                 rtree.addPrefix(network, int(prefixlen))
-                                jsonData = query_ip(ip, base_taobao_url)
+                                jsonData = query_ip(ip)
                                 data_key = ["country", "province", "city", "isp"]
                                 node  = rtree.rnode
                                 for key in data_key:
