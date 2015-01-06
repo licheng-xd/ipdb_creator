@@ -48,7 +48,7 @@ def scan_cn_ip():
     try:
         for line in f.readlines():
             if count % 100 == 0:
-                logger.info("==============================>" + count)
+                logger.info("==============================>[%s]", str(count))
             count += 1
             #l = line.decode("utf-8")
             params = line.split("|")
