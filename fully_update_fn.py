@@ -40,14 +40,14 @@ def split_network_from_start_to_end(start, end):
 
 def scan_fn_ip():
     country_code = {}
-    for line in open('country_code', 'r'):
+    for line in open('input/country_code', 'r'):
         code, name = line.split(" ")
         country_code[code] = name.strip().decode("utf-8")
         #print code, country_code[code]
         logger.info(code + ' ' + country_code[code])
 
     rtree = ipRadixDB()
-    ip_area_list = ["input/delegated-arin-latest", "input/delegated-ripencc-latest", "input/delegated-lacnic-latest", "input/delegated-afrinic-latest", "input/delegated-apnic-latest" ]
+    ip_area_list = ["input/delegated-arin-latest", "input/delegated-ripencc-latest", "input/delegated-lacnic-latest", "input/delegated-afrinic-latest", "input/delegated-apnic-latest", "input/delegated-iana-latest"]
     dft = defaultdict(list)
     availableIPs = []
     for f in ip_area_list:
@@ -92,7 +92,7 @@ def scan_fn_ip():
         jsonData = None;
         while jsonData == None:
             try:
-                jsonData = query_ip(ip, base_taobao_url)
+                jsonData = query_ip(ip)
             except Exception, e:
                 #print e
                 logger.error(e)

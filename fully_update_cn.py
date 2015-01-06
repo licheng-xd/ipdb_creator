@@ -75,7 +75,7 @@ def scan_cn_ip():
                         jsonData = None
                         while jsonData == None:
                             try:
-                                jsonData = query_ip(ip, base_taobao_url)
+                                jsonData = query_ip(ip)
                             except Exception, e:
                                 #print e
                                 logger.error(e)
