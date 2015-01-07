@@ -22,8 +22,9 @@ def query_ip(ip):
                 resultL.append(json["data"])
                 break
             else:
-                logger.warn("request ip.taobao error, maybe too many requests, let's wait a while.")
-                sleep_s += 5
+                logger.warn("request ip.taobao error, maybe too many requests, let's wait a while ---> " + str(sleep_s))
+                if sleep_s < 1800:
+                    sleep_s += 5
                 sleep(sleep_s)
         except Exception, e:
             logger.error("request taobao exception: " + str(e.message))
