@@ -74,14 +74,7 @@ def scan_cn_ip():
                     if not rnode:
                         #print "not rnode"
                         rtree.addPrefix(network, int(prefixlen))
-                        jsonData = None
-                        while jsonData == None:
-                            try:
-                                jsonData = query_ip(ip)
-                            except Exception, e:
-                                #print e
-                                logger.error(e)
-                                time.sleep(0.5)
+                        jsonData = query_ip(ip)
                         data_key = ["country", "province", "city", "isp"]
                         node  = rtree.rnode
                         for key in data_key:

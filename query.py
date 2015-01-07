@@ -13,6 +13,7 @@ def query_ip(ip):
     payload = {"ip":ip}
     resultL = []
     while True:
+        sleep_s = 0;
         try:
             payload.pop("format", 0)
             result = requests.get(base_taobao_url, params=payload)
@@ -21,11 +22,11 @@ def query_ip(ip):
                 resultL.append(json["data"])
                 break
             else:
-                logger.warn("request ip.taobao error, maybe too many requests, let's wait 5 second.")
-                sleep(5)
+                logger.warn("request ip.taobao error, maybe too many requests, let's wait a while.")
+                sleep_s += 5
+                sleep(sleep_s)
         except Exception, e:
-            logger.error(e)
-            continue
+            logger.error("request taobao exception: " + e)
 
     if resultL:
         rjson = reduce(lambda d1,d2: dict(d1.items() + { k:v for k,v in d2.items() if v }.items()), resultL)

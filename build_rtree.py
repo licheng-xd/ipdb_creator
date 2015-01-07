@@ -14,6 +14,9 @@ def ip_integer_to_string(ip):
      "Convert 32-bit integer to dotted IPv4 address."
      return ".".join(map(lambda n: str(ip>>n & 0xFF), [24,16,8,0]))
 
+if __name__ == '__main__':
+    print ip_integer_to_string(0x80000000)
+
 def ip_integer_to_integer_array(ip):
     "convert 32-bit integer to [a, b, c, d]"
     return map(lambda n: ip>>n & 0xff, [24,16,8,0])
