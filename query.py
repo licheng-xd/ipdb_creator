@@ -26,7 +26,7 @@ def query_ip(ip):
                 sleep_s += 5
                 sleep(sleep_s)
         except Exception, e:
-            logger.error("request taobao exception: " + e)
+            logger.error("request taobao exception: " + str(e.message))
 
     if resultL:
         rjson = reduce(lambda d1,d2: dict(d1.items() + { k:v for k,v in d2.items() if v }.items()), resultL)
