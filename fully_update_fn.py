@@ -58,7 +58,7 @@ def scan_fn_ip():
                 startIP = params[3]
                 endIP = ip_integer_to_string(ip_integer_from_string(startIP) + int(params[4]) - 1)
                 #print startIP, endIP, int(params[4])
-                logger.info(startIP + ' ' + endIP + ' ' + int(params[4]))
+                logger.info(startIP + ' ' + endIP + ' ' + params[4])
                 iprange = IPRange(startIP, endIP)
                 if params[1] == '':
                     availableIPs += map(str, iprange.cidrs())
@@ -78,7 +78,7 @@ def scan_fn_ip():
             data = rtree.rnode.data
             country = country_code[key]
             #print prefix,country
-            logger.info(prefix + ' ' + country)
+            logger.info(str(prefix) + ' ' + country)
             data['country'] = country#jsonData.get('country','')
             data['ip'] = ip
             data['ip_amount'] = prefix.size

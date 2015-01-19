@@ -8,13 +8,13 @@ from log import logger
 
 
 if __name__ == '__main__':
-    #print 'start scan cn data ...'
+    print 'start scan cn data ...'
     logger.info('start scan cn data ...')
     cn_done = scan_cn_ip()
     if not cn_done:
         print 'cn data exception, exit programe!'
         sys.exit(0)
-    #print 'start scan fn data ...'
+    print 'start scan fn data ...'
     logger.info('start scan fn data ...')
     scan_fn_ip()
 
@@ -28,4 +28,4 @@ if __name__ == '__main__':
     #print 'start merge fn cn data ...'
     logger.info('start merge fn cn data ...')
     rtree.prefixMerge()
-    rtree.writeRawToFile(file="output/ipdb_all")
+    rtree.writeRawToFile(file="output/ipdb.dat")

@@ -149,7 +149,7 @@ class ipRadixDB:
                 else:#not same, merge all the prefix in the stack
                     #network_list = cidr_merge(map(IPNetwork, prefix_stack))
                     if len(prefix_stack) :
-                        lastest_address = str(IPNetwork(previous)[-1])
+                        #lastest_address = str(IPNetwork(previous)[-1])
                         #network_list = IPRange(prefix_stack[0].split("/")[0], lastest_address).cidrs()
                         network_list = IPSet(prefix_stack+[previous]).iter_cidrs()
                         newdata = pdata.copy()

@@ -41,7 +41,7 @@ def scan_cn_ip():
     rtree = ipRadixDB()
     oldrtree = ipRadixDB()
     all_done = True
-    #oldrtree.loadFromRawFile(file="raw_data_cn_taobao")
+    rtree.loadFromRawFile(file="raw_data_cn_taobao")
     #rtree.loadFromRawFile(file="raw_latest_cn_taobao_merged")
     f = open("input/delegated-apnic-latest","r")
     count = 0
@@ -83,8 +83,7 @@ def scan_cn_ip():
                         #print "%s [%s] [%s] [%s]" % (ip, prefix, str(sub), node.data["province"])
                         logger.info("%s [%s] [%s] [%s]" % (ip, prefix, str(sub), node.data["province"]))
                     else:
-                        #print "******************* rnode", str(rnode)
-                        logger.info("******************* rnode" + ' ' + str(rnode))
+                        logger.info("oldtree rnode " + str(rnode))
                         if not rtree.queryIp(ip):
                             pprefix = rnode.prefix
                             pnetwork,pprefixlen = prefix.split('/')

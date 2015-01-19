@@ -7,25 +7,22 @@ from time import sleep
 from log import logger
 
 base_taobao_url = "http://ip.taobao.com/service/getIpInfo.php"
-base_sina_url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php"
+base_sina_url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php" # 新浪库准确率太低，抛弃他
 
 def query_ip(ip):
     payload = {"ip":ip}
     resultL = []
     while True:
-        sleep_s = 0;
         try:
             payload.pop("format", 0)
-            result = requests.get(base_taobao_url, params=payload)
+            result = requests.get(base_taobao_url, params=payload, timeout=5)
             if result.status_code == 200:
                 json = result.json()
                 resultL.append(json["data"])
                 break
             else:
-                logger.warn("request ip.taobao error, maybe too many requests, let's wait a while ---> " + str(sleep_s))
-                if sleep_s < 1800:
-                    sleep_s += 5
-                sleep(sleep_s)
+                logger.warn("request ip.taobao error, maybe too many requests, let's wait a while")
+                sleep(1)
         except Exception, e:
             logger.error("request taobao exception: " + str(e.message))
 
