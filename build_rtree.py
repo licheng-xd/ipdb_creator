@@ -2,23 +2,22 @@
 import radix
 import cPickle
 from query import query_ip
-import math,random
-from netaddr import IPRange, IPNetwork, IPSet
-import sys
+import random
+from netaddr import IPRange, IPSet
 
 def ip_integer_from_string(s):
-    "Convert dotted IPv4 address to integer."
+    """Convert dotted IPv4 address to integer."""
     return reduce(lambda a,b: a<<8 | b, map(int, s.split(".")))
 
 def ip_integer_to_string(ip):
-     "Convert 32-bit integer to dotted IPv4 address."
+     """Convert 32-bit integer to dotted IPv4 address."""
      return ".".join(map(lambda n: str(ip>>n & 0xFF), [24,16,8,0]))
 
 if __name__ == '__main__':
     print ip_integer_to_string(0x80000000)
 
 def ip_integer_to_integer_array(ip):
-    "convert 32-bit integer to [a, b, c, d]"
+    """convert 32-bit integer to [a, b, c, d]"""
     return map(lambda n: ip>>n & 0xff, [24,16,8,0])
 
 def generate_random_ip(network, masklen):
@@ -36,7 +35,7 @@ def split_network_from_start_to_end(start, end):
 
 class ipRadixDB:
     totalRecords = 0
-    recordKeys = ['country', 'city', 'isp', 'ip', 'province']#there are more keys. prefix:longest prefix network,  province, ip:lookup ip
+    recordKeys = ['country', 'city', 'isp', 'ip', 'province']
     def __init__(self, radixFile="radix"):
         try:
             self.radixFile = open(radixFile,"rb")
@@ -60,20 +59,13 @@ class ipRadixDB:
     def queryIp(self, ip, masklen=24):
         self.rnode = self.rtree.search_best(ip)
         return self.rnode
-        #if not self.rnode:
-            #self.queryIpWithUpdate(ip, masklen)
-            #return self.rnode
-        #else:
-            #return self.rnode
 
     def queryIpWithUpdate(self, ip, masklen=24):
         if not ip in self.previousSinaIpSet:
             self.rnode = self.rtree.search_best(ip)
             if not self.rnode:#this ip is not in the prefix table
                 jsonData = query_ip(ip)
-                #print jsonData
-                #jsonData = self.queryIp(ip)
-                if jsonData: #we actually get the data
+                if jsonData:
                     start = jsonData.get("start","")
                     if start:#we have the sina data:
                         end = jsonData["end"]
@@ -86,32 +78,21 @@ class ipRadixDB:
                                     self.rnode.data[k] = jsonData.get(k,ip)
                                 else:
                                     self.rnode.data[k] = jsonData[k]
-                    else: #we still have data, but just taobao's data
-                        #integer_array = ip_integer_to_integer_array(ip_integer_from_string(ip))
-                        #integer_array[3] = 0
-                        #network = ".".join(map(str, integer_array))
-                        #masklen = 24
+                    else:
                         self.addPrefix(ip, masklen)
                         for k in ipRadixDB.recordKeys:
                             self.rnode.data[k] = jsonData[k]
-            else:#we found the longest mached prefix
-                #print self.rnode.data
-                #print self.rnode.prefixlen
+            else:
                 if self.rnode.prefixlen < 24 or not self.rnode.data.get("country",""):#only the prefix is bigger than x/24 network
                     jsonData = query_ip(ip)#maybe the prefix is too large, we need to substrac the prefix
-                    #print jsonData
-                    #jsonData = self.queryIp(ip)
                     if jsonData:
-                        jsonData["ip"] = ip#add the ip address to the sina query result
+                        jsonData["ip"] = ip
                         self.substractPrefix(self.rnode, jsonData)
 
-    def substractPrefix(self, rnode, jsonData):#根据sina的网段数据进行划分
+    def substractPrefix(self, rnode, jsonData):
         data = rnode.data
-        #print data
-        #prefix = rnode.prefix
         prefixlen = rnode.prefixlen
         network = rnode.network
-        #print jsonData
         if (jsonData["city"] != data.get("city","") or jsonData["province"] != data.get("province","") or jsonData["isp"] != data.get("isp", "") or jsonData["country"] != data.get("isp", "")):#we got the sina json data
             start = jsonData.get("start", "")
             if start:
@@ -147,10 +128,7 @@ class ipRadixDB:
                 if reduce(lambda a,b:a*b, [ pdata[k] == data[k] for k in compare_key]) or (data['country'] != u'中国' and data['country'] == pdata['country']):#the new prefix is same as the previous one
                     prefix_stack += [previous, prefix]
                 else:#not same, merge all the prefix in the stack
-                    #network_list = cidr_merge(map(IPNetwork, prefix_stack))
                     if len(prefix_stack) :
-                        #lastest_address = str(IPNetwork(previous)[-1])
-                        #network_list = IPRange(prefix_stack[0].split("/")[0], lastest_address).cidrs()
                         network_list = IPSet(prefix_stack+[previous]).iter_cidrs()
                         newdata = pdata.copy()
                         for k in prefix_stack:
@@ -168,15 +146,12 @@ class ipRadixDB:
                 prefix_stack.append(prefix)
         if len(prefix_stack) >= 2:
             previous = prefix_stack.pop()
-            #lastest_address = str(IPNetwork(previous)[-1])
             pdata = self.rtree.search_exact(previous).data
             newdata = pdata.copy()
-            #network_list = IPRange(prefix_stack[0].split("/")[0], lastest_address).cidrs()
             network_list = IPSet(prefix_stack+[previous]).iter_cidrs()
             for k in prefix_stack:
                 self.rtree.delete(k)
             self.rtree.delete(previous)
-            #print network_list
             for k in network_list:
                 node = self.rtree.add(str(k))
                 for key in compare_key:
@@ -194,7 +169,6 @@ class ipRadixDB:
         for node in self.rtree.nodes():
             data = [ node.prefix ] + [ node.data[k] for k in data_key ]
             string = ";".join(map(unicode, data))
-            #string = ";".join(data)
             rawFile.write(string.encode("utf-8") + "\n")
         rawFile.close()
 

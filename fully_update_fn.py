@@ -1,15 +1,11 @@
 #coding:utf-8
-#import radix
-#import cPickle
-from query import query_ip,base_taobao_url,base_sina_url
+from query import query_ip
 import random
 from netaddr import IPRange, IPNetwork, IPSet
 from collections import defaultdict
-import math
 from build_rtree import  ipRadixDB
 import time
 from log import logger
-import os
 
 
 def ip_integer_from_string(s):
@@ -43,7 +39,6 @@ def scan_fn_ip():
     for line in open('input/country_code', 'r'):
         code, name = line.split(" ")
         country_code[code] = name.strip().decode("utf-8")
-        #print code, country_code[code]
         logger.info(code + ' ' + country_code[code])
 
     rtree = ipRadixDB()
@@ -57,7 +52,6 @@ def scan_fn_ip():
             if len(params) >= 4 and params[2] == "ipv4" and params[3] != "*" and params[1] != "CN":
                 startIP = params[3]
                 endIP = ip_integer_to_string(ip_integer_from_string(startIP) + int(params[4]) - 1)
-                #print startIP, endIP, int(params[4])
                 logger.info(startIP + ' ' + endIP + ' ' + params[4])
                 iprange = IPRange(startIP, endIP)
                 if params[1] == '':
@@ -69,7 +63,6 @@ def scan_fn_ip():
         network,masklen = prefix.split('/')
         masklen = int(masklen)
         ip = generate_random_ip(network,masklen)
-        #jsonData = query_ip(ip, base_taobao_url)
         ipset = IPSet(dft[key])
         for prefix in ipset.iter_cidrs():
             network,masklen = str(prefix).split('/')
@@ -77,9 +70,8 @@ def scan_fn_ip():
             rtree.addPrefix(network,masklen)
             data = rtree.rnode.data
             country = country_code[key]
-            #print prefix,country
             logger.info(str(prefix) + ' ' + country)
-            data['country'] = country#jsonData.get('country','')
+            data['country'] = country #jsonData.get('country','')
             data['ip'] = ip
             data['ip_amount'] = prefix.size
             data['province'] = ''
@@ -94,7 +86,6 @@ def scan_fn_ip():
             try:
                 jsonData = query_ip(ip)
             except Exception, e:
-                #print e
                 logger.error(e)
                 time.sleep(0.5)
         rtree.addPrefix(network,masklen)
@@ -105,9 +96,7 @@ def scan_fn_ip():
         data['province'] = ''
         data['city'] = ''
         data['isp'] = ''
-        #print prefix, data['country']
         logger.info(prefix + ' ' + data['country'])
-    #print  'start merge fn data ...'
     logger.info('start merge fn data ...')
     rtree.writeRawToFile(file="output/ip_data_fn_original")
     rtree.prefixMerge()
