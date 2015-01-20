@@ -10,7 +10,7 @@ ipdb_creator
 3. fully_update_cn.py:生成国内ip数据库，运行fully_update_cn.py会生成ip_data_cn_merged文件,该文件即淘宝上的国内ip数据信息。国内ip会扫描所有24网段。
 4. fully_update_fn.py:生成国外ip数据库，运行fully_update_fn.py会生成ip_data_fn_merged文件,该文件即国外ip数据信息.国外ip只根据delegated文件中分配得简称来确定国家，如果没有国家简称，则通过taobao查询。
 4. starter.py:启动器，会分别调用fully_update.py和fully_update_cn.py，最后通过合并ip_data_cn_merged和ip_data_fn_merged，得到ipdb.dat，就是完整的ip数据库结果。
-5. delegated-*-latest:6个文件是6个ip分配组织提供的ip的数据集，需要先将这些文件进行更新.最新地址参看附录。
+5. delegated-*-latest:5个文件是ip分配组织提供的ip的数据集，需要先将这些文件进行更新.最新地址参看附录。
 6. country_code:国家简称表
 6. log.py: 日志打印
 

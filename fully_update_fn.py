@@ -47,7 +47,7 @@ def scan_fn_ip():
         logger.info(code + ' ' + country_code[code])
 
     rtree = ipRadixDB()
-    ip_area_list = ["input/delegated-arin-latest", "input/delegated-ripencc-latest", "input/delegated-lacnic-latest", "input/delegated-afrinic-latest", "input/delegated-apnic-latest", "input/delegated-iana-latest"]
+    ip_area_list = ["input/delegated-arin-latest", "input/delegated-ripencc-latest", "input/delegated-lacnic-latest", "input/delegated-afrinic-latest", "input/delegated-apnic-latest"]
     dft = defaultdict(list)
     availableIPs = []
     for f in ip_area_list:
