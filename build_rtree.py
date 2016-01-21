@@ -1,7 +1,7 @@
 #coding:utf-8
 import radix
 import cPickle
-from query import query_ip
+from query import query_local
 import random
 from netaddr import IPRange, IPSet
 
@@ -64,7 +64,7 @@ class ipRadixDB:
         if not ip in self.previousSinaIpSet:
             self.rnode = self.rtree.search_best(ip)
             if not self.rnode:#this ip is not in the prefix table
-                jsonData = query_ip(ip)
+                jsonData = query_local(ip)
                 if jsonData:
                     start = jsonData.get("start","")
                     if start:#we have the sina data:
@@ -84,7 +84,7 @@ class ipRadixDB:
                             self.rnode.data[k] = jsonData[k]
             else:
                 if self.rnode.prefixlen < 24 or not self.rnode.data.get("country",""):#only the prefix is bigger than x/24 network
-                    jsonData = query_ip(ip)#maybe the prefix is too large, we need to substrac the prefix
+                    jsonData = query_local(ip)#maybe the prefix is too large, we need to substrac the prefix
                     if jsonData:
                         jsonData["ip"] = ip
                         self.substractPrefix(self.rnode, jsonData)

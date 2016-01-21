@@ -17,10 +17,45 @@ IP.load(os.path.abspath("input/mydata4vipweek2.dat"))
 def query_local(ip):
     ret = IP.find(ip)
     tmp = ret.split()
+    print tmp[0], tmp[1]
     rjson = dict()
-    rjson["province"] = tmp[1] + u'省'
-    rjson["city"] = tmp[2] + u'市'
-    rjson["isp"] = tmp[-1]
+    if tmp[0] != u'中国':
+        rjson["country"] = u'中国'
+        rjson["province"] = u'北京市'
+        rjson["city"] = u'北京市'
+        rjson["isp"] = tmp[-1]
+    else:
+        # if tmp[1] == u'台湾' or tmp[1] == u'香港' or tmp[1] == u'澳门':
+        if tmp[1] in (u'台湾', u'香港', u'澳门'):
+            rjson["country"] = tmp[1]
+            rjson["province"] = u''
+            rjson["city"] = u''
+            rjson["isp"] = u''
+        elif tmp[1] in (u'西藏', u'内蒙古'):
+            rjson["country"] = tmp[0]
+            rjson["province"] = tmp[1] + u'自治区'
+            rjson["city"] = tmp[-2] + u'市'
+            rjson["isp"] = tmp[-1]
+        elif tmp[1] == u'广西':
+            rjson["country"] = tmp[0]
+            rjson["province"] = tmp[1] + u'壮族自治区'
+            rjson["city"] = tmp[-2] + u'市'
+            rjson["isp"] = tmp[-1]
+        elif tmp[1] == u'新疆':
+            rjson["country"] = tmp[0]
+            rjson["province"] = tmp[1] + u'维吾尔自治区'
+            rjson["city"] = tmp[-2] + u'市'
+            rjson["isp"] = tmp[-1]
+        elif tmp[1] == u'宁夏':
+            rjson["country"] = tmp[0]
+            rjson["province"] = tmp[1] + u'回族自治区'
+            rjson["city"] = tmp[-2] + u'市'
+            rjson["isp"] = tmp[-1]
+        else:
+            rjson["country"] = tmp[0]
+            rjson["province"] = tmp[1] + u'省'
+            rjson["city"] = tmp[-2] + u'市'
+            rjson["isp"] = tmp[-1]
     return rjson
 
 def query_ip(ip):
@@ -56,5 +91,5 @@ if __name__ == "__main__":
     if len(sys.argv) >= 2:
         ip = sys.argv[1]
     else:
-        ip = "123.58.191.68"
+        ip = "111.126.0.1"
     print json.dumps(query_local(ip)).decode("unicode-escape")
