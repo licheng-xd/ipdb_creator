@@ -27,8 +27,8 @@
 #
 ######################################################################
 #
-2|iana|20150105|2788|19830101|20140906|+0000
-iana|*|asn|*|2292|summary
+2|iana|20160120|2792|19830101|20150612|+0000
+iana|*|asn|*|2296|summary
 iana|*|ipv4|*|439|summary
 iana|*|ipv6|*|57|summary
 iana|ZZ|asn|0|1|19920101|ietf
@@ -2299,6 +2299,7 @@ iana|ZZ|asn|62464|1024|20130531|arin
 iana|ZZ|asn|63488|512|20130911|apnic
 iana|ZZ|asn|64000|99|20140903|apnic
 iana|ZZ|asn|64099|99|20140906|lacnic
+iana|ZZ|asn|64198|99|20150430|arin
 iana|ZZ|asn|64496|16|20081205|ietf
 iana|ZZ|asn|64512|1023|19830101|ietf
 iana|ZZ|asn|65535|1|19830101|ietf
@@ -2315,12 +2316,15 @@ iana|ZZ|asn|198656|1024|20120322|ripencc
 iana|ZZ|asn|199680|512|20130910|ripencc
 iana|ZZ|asn|200192|1024|20140301|ripencc
 iana|ZZ|asn|201216|1024|20140301|ripencc
+iana|ZZ|asn|202240|1024|20150612|ripencc
+iana|ZZ|asn|203264|1024|20150612|ripencc
 iana|ZZ|asn|262144|1024|20061129|lacnic
 iana|ZZ|asn|263168|512|20130612|lacnic
 iana|ZZ|asn|263680|925|20140906|lacnic
 iana|ZZ|asn|264605|1024|20140906|lacnic
 iana|ZZ|asn|327680|1024|20061129|afrinic
 iana|ZZ|asn|393216|1024|20061129|arin
+iana|ZZ|asn|394240|925|20150430|arin
 iana|ZZ|asn|4200000000|94967295|20130607|ietf
 iana|ZZ|asn|4294967295|1|20061129|ietf
 iana|ZZ|ipv4|0.0.0.0|16777216|19830101|ietf

@@ -1,13 +1,27 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 import requests
 import sys
 from time import sleep
 from log import logger
+import os, json
+
+from ipip import IP
 
 base_taobao_url = "http://ip.taobao.com/service/getIpInfo.php"
 base_sina_url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php" # 新浪库准确率太低，抛弃他
+
+IP.load(os.path.abspath("input/mydata4vipweek2.dat"))
+
+def query_local(ip):
+    ret = IP.find(ip)
+    tmp = ret.split()
+    rjson = dict()
+    rjson["province"] = tmp[1] + u'省'
+    rjson["city"] = tmp[2] + u'市'
+    rjson["isp"] = tmp[-1]
+    return rjson
 
 def query_ip(ip):
     payload = {"ip":ip}
@@ -42,5 +56,5 @@ if __name__ == "__main__":
     if len(sys.argv) >= 2:
         ip = sys.argv[1]
     else:
-        ip = "199.19.226.150"
-    print query_ip(ip)
+        ip = "123.58.191.68"
+    print json.dumps(query_local(ip)).decode("unicode-escape")

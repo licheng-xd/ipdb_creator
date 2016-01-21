@@ -1,5 +1,5 @@
 #coding:utf-8
-from query import query_ip
+from query import *
 import random
 import math
 from netaddr import IPRange, IPNetwork, IPSet
@@ -60,7 +60,7 @@ def scan_cn_ip():
                     ip = generate_random_ip(network, int(prefixlen))
                     
                     rtree.addPrefix(network, int(prefixlen))
-                    jsonData = query_ip(ip)
+                    jsonData = query_local(ip)
                     data_key = ["country", "province", "city", "isp"]
                     node  = rtree.rnode
                     for key in data_key:

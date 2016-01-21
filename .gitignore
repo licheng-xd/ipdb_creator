@@ -1,0 +1,42 @@
+# Java Class Files
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# IDEA Files
+*.iml
+.idea/
+out/
+
+# Gradle Files
+.gradle/
+build/
+
+# Sentry Files
+!sentry-javaagent-premain-2.0.0.jar
+
+# eclipse
+.setting/
+.classpath
+.project
+
+# else
+target/
+*.log*
+*.patch
+compressed/
+*.DS_Store
+
+# LOG Files
+log/
+
+*.pyc
